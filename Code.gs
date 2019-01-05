@@ -1,4 +1,4 @@
-function update(){ //checks for past events every 24 hours
+function update(){ // grays out rows if the event has passed
   var sheet = SpreadsheetApp.getActiveSheet();
   if(sheet.getName() == 'Main'){
   var startRow = 3;
@@ -24,7 +24,7 @@ function update(){ //checks for past events every 24 hours
 function sheetsToCal(){ //pulls events from spreadsheet to calendar
   var sheet = SpreadsheetApp.getActiveSheet();
   if(sheet.getName() == 'Main'){
-  var calendar = CalendarApp.getCalendarById('cal');
+  var calendar = CalendarApp.getCalendarById('cal'); //replace 'cal' with the calendar ID to your synced Google Calendar
   var lastRow = sheet.getLastRow();
   var startRow = 3;
   var startCol = 1;
@@ -37,7 +37,7 @@ function sheetsToCal(){ //pulls events from spreadsheet to calendar
   for (var i = 0; i < data.length; ++i) { //sets the event details
     try{
     var row = data[i];
-    var name = "[IEEE]" + row[1];
+    var name = row[1]; 
     var startDate = new Date(row[3]);
     var endDate = new Date(row[4]);
     var location = row[5];
