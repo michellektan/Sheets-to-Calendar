@@ -5,7 +5,7 @@ Refer to sample spreadsheet: https://docs.google.com/spreadsheets/d/17QKC5xU3nU6
 
 Setting Up The Spreadsheet:
 - Create a new sheets document using the format in the sample sheet above
-- Go to Tools > Script Editor to replace the code with the Code.js script
+- Go to Tools > Script Editor to replace the code with the Code.gs script in this repository
 - Fill out the name, start time, and end time columns (these are the only required columns)
 - The start time and end time must be in proper datetime format
 
