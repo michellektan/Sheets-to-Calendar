@@ -10,9 +10,8 @@ Setting Up The Spreadsheet:
 - The start time and end time must be in proper datetime format
 
 Adding/Updating/Deleting Events:
-- To add an event, set the "Public?" cell in the respective row to "Yes"
 - When an event is added, an event ID should be created and added to column K
-- To delete an event or leave it uncreated, set the "Public?" cell to "No". The event ID will be removed when "Public?" is set to "No"
+- To delete an event or leave it uncreated, set the "Leave off Calendar?" cell to "Yes". This will remove the event ID from the    spreadsheet and calendar.
 - To update to event, simply make the updated change on the spreadsheet
 - Run the code in "Tools" > "Script Editor" > "Run Function" to fire changes from the spreadsheet to the linked calendar
 
