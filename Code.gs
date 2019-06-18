@@ -1,4 +1,4 @@
-function update(){ // grays out rows if the event has passed
+function update(){ //checks for past events every 24 hours
   var sheet = SpreadsheetApp.getActiveSheet();
   if(sheet.getName() == 'Main'){
   var startRow = 3;
@@ -37,27 +37,45 @@ function sheetsToCal(){ //pulls events from spreadsheet to calendar
   for (var i = 0; i < data.length; ++i) { //sets the event details
     try{
     var row = data[i];
-    var name = row[1]; 
+    var name = "[IEEE] " + row[1];
     var startDate = new Date(row[3]);
     var endDate = new Date(row[4]);
     var location = row[5];
     var publicEvent = row[7]; //put on calendar if public
     var notes = row[8]; //event description
     var eventId = row[10]; //ID generated is placed in the last col
+    var leaveOffEvent = row[11];
     var updatedEvent;
     }
     catch(e){
-      sheet.getRange(startRow+i, 12).setValue("error 1");
+      sheet.getRange(startRow+i, 13).setValue("invalid event details 1");
     }
-    if(publicEvent == "Yes"){
-      if(eventId == 0 || eventId == null){ //if the event hasn't been created yet, create it
+       if(leaveOffEvent == "Yes"){ //removes event from sheet and calendar if created
+       if(eventId == 0 || eventId == null){
+         break;
+       }
+       else{
+       try{
+       updatedEvent = calendar.getEventById(eventId);
+       updatedEvent.deleteEvent();      
+       sheet.getRange(startRow+i, 11).clearContent(); //delete eventID
+     }
+       catch(e){
+         sheet.getRange(startRow+i, 13).setValue("invalid event details 4");
+   }
+  }
+}
+    if(row[3] == 'TBD' || row[3] == ''){
+    }
+    
+     else if((eventId == 0 || eventId == null)){ //if the event hasn't been created yet, create it
         try{
       var event = calendar.createEvent(name, startDate, endDate, {location: location, description: notes});
       var range = sheet.getRange(startRow+i, 11);
       range.setValue(event.getId()); //save the event's ID
         }
         catch(e){
-          sheet.getRange(startRow+i, 12).setValue("error 2");
+          sheet.getRange(startRow+i, 13).setValue("invalid event details 2");
         }
       }
       else{ //if the event has been created, only update it
@@ -67,25 +85,11 @@ function sheetsToCal(){ //pulls events from spreadsheet to calendar
           updatedEvent.setTitle(name);
           updatedEvent.setLocation(location);
           updatedEvent.setTime(startDate, endDate);
-          sheet.getRange(startRow+i, 12).clearContent();
       }
         catch(e){
-          sheet.getRange(startRow+i, 12).setValue("error 3").setFontColor("red");
+          sheet.getRange(startRow+i, 13).setValue("invalid event details 3").setFontColor("red");
       }
       }
-    }
-   else{
-     if(eventId != 0 && eventId != null){ //removes event from sheet and calendar if it's not public
-       try{
-       updatedEvent = calendar.getEventById(eventId);
-       updatedEvent.deleteEvent();      
-       sheet.getRange(startRow+i, 11).clearContent(); //delete eventID
-     }
-       catch(e){
-         sheet.getRange(startRow+i, 12).setValue("error 4");
-   }
   }
- }
-}
   }
 }
